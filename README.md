@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hostaway Dashboard
+
+A responsive property management dashboard built with Next.js, connecting to the [Hostaway API](https://api.hostaway.com/documentation) to manage listings, reservations, and calendar availability in real time.
+
+## Features
+
+- **Dashboard** — Live stats: total properties, confirmed reservations, arriving today, guests in-house
+- **Listings** — Browse all properties with images, location, bedrooms, capacity, and pricing
+- **Reservations** — View, create, edit, and delete reservations with status tracking
+- **Calendar** — Monthly availability view per property; click to block or unblock dates
+- **Responsive** — Works on mobile (bottom nav) and desktop (sidebar)
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org) — App Router, server components, API routes
+- [Tailwind CSS v4](https://tailwindcss.com) — Styling
+- [shadcn/ui](https://ui.shadcn.com) — UI components
+- [TanStack Query](https://tanstack.com/query) — Client-side data fetching and cache
+- [date-fns](https://date-fns.org) — Date formatting
+- [Hostaway API](https://api.hostaway.com/documentation) — OAuth 2.0 + REST
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/hostaway-dashboard.git
+cd hostaway-dashboard
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env.local` file in the root:
+
+```env
+HOSTAWAY_CLIENT_ID=your_client_id
+HOSTAWAY_CLIENT_SECRET=your_client_secret
+```
+
+You can obtain these credentials from your Hostaway account under **Settings → API**.
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  page.tsx                  # Dashboard with live stats
+  listings/
+    page.tsx                # Listings grid
+    [id]/page.tsx           # Listing detail
+  reservations/
+    page.tsx                # Reservations table + CRUD
+  calendar/
+    page.tsx                # Monthly calendar per listing
+  api/
+    listings/               # GET /api/listings
+    listings/[id]/          # GET /api/listings/:id
+    reservations/           # GET + POST /api/reservations
+    reservations/[id]/      # PUT + DELETE /api/reservations/:id
+    calendar/[id]/          # GET + PUT /api/calendar/:id
+components/
+  sidebar.tsx               # Desktop sidebar + mobile bottom nav
+  providers.tsx             # React Query provider
+  ui/                       # shadcn/ui components
+lib/
+  hostaway.ts               # OAuth token management + fetch wrapper
+  utils.ts                  # Tailwind class utility
+```
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Description |
+|---|---|
+| `HOSTAWAY_CLIENT_ID` | Your Hostaway API client ID |
+| `HOSTAWAY_CLIENT_SECRET` | Your Hostaway API client secret |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+These are never exposed to the browser — all Hostaway API calls are proxied through Next.js API routes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy to [Vercel](https://vercel.com) in one click. Set `HOSTAWAY_CLIENT_ID` and `HOSTAWAY_CLIENT_SECRET` as environment variables in the Vercel project settings.
