@@ -26,7 +26,7 @@ export default function ListingDetailPage() {
     return <div className="text-red-500 p-4">Failed to load listing.</div>;
 
   const l = data.result;
-  const images: { url: string; sortOrder: number }[] = (l.listingImages ?? []).slice().sort((a, b) => a.sortOrder - b.sortOrder);
+  const images: { url: string; sortOrder: number }[] = (l.listingImages ?? []).slice().sort((a: { sortOrder: number }, b: { sortOrder: number }) => a.sortOrder - b.sortOrder);
   const location = [l.address, l.city, l.state, l.country].filter(Boolean).join(", ");
   const amenities: string[] = l.amenities ?? [];
 
